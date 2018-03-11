@@ -1,0 +1,8 @@
+{
+    "name": "DSA.Extensions.GameTime",
+    "references": [
+        "DSA.Extensions.Base"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}
