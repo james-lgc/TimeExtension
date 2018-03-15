@@ -8,5 +8,5 @@ using DSA.Extensions.Base;
 [System.Serializable]
 public abstract class TimeTrait : TraitBase
 {
-	public override ExtensionEnum.Extension Extension { get { return ExtensionEnum.Extension.Time; } }
+	public override ExtensionEnum Extension { get { return ExtensionEnum.Time; } }
 }

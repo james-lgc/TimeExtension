@@ -7,7 +7,7 @@ namespace DSA.Extensions.GameTime
 {
 	public class Sun : ExtendedMonoBehaviour
 	{
-		public override ExtensionEnum.Extension Extension { get { return ExtensionEnum.Extension.Time; } }
+		public override ExtensionEnum Extension { get { return ExtensionEnum.Time; } }
 
 		private float timeSpeed;
 		[SerializeField] private float degreesPerRealMinute;
