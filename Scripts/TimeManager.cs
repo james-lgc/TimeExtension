@@ -40,11 +40,15 @@ namespace DSA.Extensions.GameTime
 
 		public override void Load()
 		{
+			OnTimeUpdate = null;
 			DayCycleObject[] dayCycleObjects = FindObjectsOfType<DayCycleObject>();
 			for (int i = 0; i < dayCycleObjects.Length; i++)
 			{
-				OnTimeUpdate += dayCycleObjects[i].UpdateTime;
-				dayCycleObjects[i].TimeProcessingFunction = GetIsProcessing;
+				if (OnTimeUpdate != dayCycleObjects[i].UpdateTime)
+				{
+					OnTimeUpdate += dayCycleObjects[i].UpdateTime;
+					dayCycleObjects[i].TimeProcessingFunction = GetIsProcessing;
+				}
 			}
 			RaiseOnTimeUpdate();
 		}
