@@ -10,12 +10,8 @@ public struct TimeProgress
 	[SerializeField] private TimeSpan gameTime;
 	public TimeSpan GameTime { get { return gameTime; } }
 
-	[SerializeField] private TransformValue sunPosition;
-	public TransformValue SunPosition { get { return sunPosition; } }
-
-	public TimeProgress(TimeSpan sentTime, TransformValue sentTrans)
+	public TimeProgress(TimeSpan sentTime)
 	{
 		gameTime = sentTime;
-		sunPosition = sentTrans;
 	}
 }

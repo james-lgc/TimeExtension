@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DSA.Extensions.Base;
 using System;
 
 namespace DSA.Extensions.GameTime
 {
-	public class Sun : DayCycleObject
+	public class OffsettableSkyBox : DayCycleObject
 	{
-		[SerializeField] protected float xOffset;
-		[SerializeField] protected float yOffset;
-		[SerializeField] protected float zOffset;
-		protected Quaternion lastRotation;
+		private Renderer thisRenderer;
+
+		private void Awake()
+		{
+			thisRenderer = GetComponent<Renderer>();
+		}
 
 		public void Update()
 		{
@@ -19,14 +20,8 @@ namespace DSA.Extensions.GameTime
 			if (TimeProcessingFunction == null) { return; }
 			if (!TimeProcessingFunction()) { return; }
 			timeElapsed += Time.deltaTime;
-			Quaternion nextRotation = Quaternion.Euler(nextValue - xOffset, 0, 0);
-			transform.rotation = Quaternion.Slerp(lastRotation, nextRotation, timeElapsed / realTimeIncrement);
-		}
-
-		public void SetPosition(TransformValue sentTrans)
-		{
-			transform.position = sentTrans.Position;
-			transform.rotation = sentTrans.Rotation;
+			currentValue = Mathf.Lerp(lastValue, nextValue, timeElapsed / realTimeIncrement);
+			thisRenderer.material.SetTextureOffset("_MainTex", new Vector2(currentValue, 0));
 		}
 
 		protected override void SetNextValue()
@@ -37,13 +32,19 @@ namespace DSA.Extensions.GameTime
 			totalValue += changeDivision * nextTime.Minutes;
 			changeDivision = changeDivision / 60;
 			totalValue += changeDivision * nextTime.Seconds;
-			nextValue = totalValue;
+			if (currentTime.Hours > 0 && currentTime.Hours < 12)
+			{
+				nextValue = noonValue + (midnightValue - totalValue);
+			}
+			else
+			{
+				nextValue = noonValue + Mathf.Abs(totalValue - midnightValue);
+			}
 		}
 
 		protected override void SetLastValue()
 		{
-			lastValue = transform.rotation.eulerAngles.x;
-			lastRotation = transform.rotation;
+			lastValue = thisRenderer.material.GetTextureOffset("_MainTex").x;
 		}
 	}
 }
